@@ -43,29 +43,14 @@ public class PostgreSQLDatabase extends Database<PostgreSQLConnection> {
         return new PostgreSQLConnection(this, connection);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @Override
     public final void ensureSupported() {
+        // 检查数据库版本不低于 9.0
         ensureDatabaseIsRecentEnough("9.0");
-
-        ensureDatabaseNotOlderThanOtherwiseRecommendUpgradeToFlywayEdition("9.5", org.flywaydb.core.internal.license.Edition.ENTERPRISE);
-
-        recommendFlywayUpgradeIfNecessaryForMajorVersion("13");
+        // 检查数据库是否高于指定版本，并且推荐升级到某个特定的Flyway版本（在源码中为9.4版本）。如果数据库版本较旧，并且与所需的Flyway版本不兼容，将给出相应的建议
+        ensureDatabaseNotOlderThanOtherwiseRecommendUpgradeToFlywayEdition("9.0", org.flywaydb.core.internal.license.Edition.ENTERPRISE);
+        // 检查数据库是否需要升级到指定的主要版本，如果数据库的版本低于指定版本，给出升级Flyway的建议
+        recommendFlywayUpgradeIfNecessaryForMajorVersion("15");
     }
 
     @Override

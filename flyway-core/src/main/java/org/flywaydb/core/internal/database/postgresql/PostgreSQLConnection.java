@@ -41,10 +41,29 @@ public class PostgreSQLConnection extends Connection<PostgreSQLDatabase> {
         }
     }
 
+
+    /**
+     * 方法作用：将数据库连接的角色（role）重置为其原始值，确保在迁移或回调过程中更改的角色被还原回初始状态，
+     * 在Flyway的设计中，可能会在迁移或回调期间更改数据库连接的角色，以满足特定需求。为了保证不同迁移之间的一致性，
+     * 当完成迁移或回调时，需要将角色重置为初始状态，以免对后续迁移或操作产生影响
+     *
+     * 把这个方法体注释掉，经测试高斯和postgresql均无影响。由于 postgresql 和 高斯 之间对设置 role 语法之间的差异，
+     * 高斯数据库 set 角色时还需要带上密码，而postgresql则不用，如：
+     *
+     * postgresql: SET ROLE xxx
+     * gaussDB: SET ROLE xxx PASSWORD xxx
+     *
+     * @return
+     * @throws @throws SQLException SQLException
+     * @author yzh
+     * @see
+     * @since 2024/01/08
+     */
     @Override
     protected void doRestoreOriginalState() throws SQLException {
         // Reset the role to its original value in case a migration or callback changed it
-        jdbcTemplate.execute("SET ROLE '" + originalRole + "'");
+        // 注释以下代码
+        //jdbcTemplate.execute("SET ROLE '" + originalRole + "'");
     }
 
     @Override
