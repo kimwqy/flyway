@@ -234,7 +234,7 @@ public class MySQLDatabase extends Database<MySQLConnection> {
      * https://mariadb.com/kb/en/server-system-variables/#version
      */
     static MigrationVersion correctForAzureMariaDB(String jdbcMetadataVersion, String selectVersionOutput) {
-        if (jdbcMetadataVersion.startsWith("5.8")) {
+        if (jdbcMetadataVersion.startsWith("5.6")) {
             LOG.debug("Azure MariaDB database - reporting v5.6 in JDBC metadata but database actually v" + selectVersionOutput);
             return extractVersionFromString(selectVersionOutput, MARIADB_VERSION_PATTERN, MARIADB_WITH_MAXSCALE_VERSION_PATTERN);
         }
@@ -287,7 +287,7 @@ public class MySQLDatabase extends Database<MySQLConnection> {
             recommendFlywayUpgradeIfNecessary("10.4");
         } else {
 
-            ensureDatabaseNotOlderThanOtherwiseRecommendUpgradeToFlywayEdition("5.7", org.flywaydb.core.internal.license.Edition.ENTERPRISE);
+            ensureDatabaseNotOlderThanOtherwiseRecommendUpgradeToFlywayEdition("5.6", org.flywaydb.core.internal.license.Edition.ENTERPRISE);
 
             recommendFlywayUpgradeIfNecessary("8.0");
         }
